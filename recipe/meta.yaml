@@ -2,7 +2,7 @@
 {% set version = "1.5.0.59" %}
 {% set cuda_version = "12.0" %}
 {% set platform = "linux-x86_64" %}  # [linux64]
-{% set platform = "linux-sbsa" %}  # [aarch64]
+{% set platform = "linux-aarch64" %}  # [aarch64]
 {% set target_name = "x86_64-linux" %}  # [linux64]
 {% set target_name = "sbsa-linux" %}  # [aarch64]
 {% set extension = "tar.xz" %}  # [not win]
@@ -97,10 +97,10 @@ outputs:
     test:
       commands:
         - test -L $PREFIX/lib/libcufile.so
-        - test -L $PREFIX/lib/libcufile_rdma.so
+        - test -L $PREFIX/lib/libcufile_rdma.so  # [linux64]
         - test -f $PREFIX/targets/{{ target_name }}/include/cufile.h
         - test -L $PREFIX/targets/{{ target_name }}/lib/libcufile.so
-        - test -L $PREFIX/targets/{{ target_name }}/lib/libcufile_rdma.so
+        - test -L $PREFIX/targets/{{ target_name }}/lib/libcufile_rdma.so  # [linux64]
         - test -d $PREFIX/man/man3
     about:
       home: https://developer.nvidia.com/cuda-toolkit
@@ -130,7 +130,7 @@ outputs:
     test:
       commands:
         - test -f $PREFIX/targets/{{ target_name }}/lib/libcufile_static.a
-        - test -f $PREFIX/targets/{{ target_name }}/lib/libcufile_rdma_static.a
+        - test -f $PREFIX/targets/{{ target_name }}/lib/libcufile_rdma_static.a  # [linux64]
     about:
       home: https://developer.nvidia.com/cuda-toolkit
       license: LicenseRef-NVIDIA-End-User-License-Agreement
