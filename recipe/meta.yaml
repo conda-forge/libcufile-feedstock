@@ -1,6 +1,6 @@
 {% set name = "libcufile" %}
-{% set version = "1.5.0.59" %}
-{% set cuda_version = "12.0" %}
+{% set version = "1.6.1.9" %}
+{% set cuda_version = "12.1" %}
 {% set platform = "linux-x86_64" %}  # [linux64]
 {% set platform = "linux-sbsa" %}  # [aarch64]
 {% set target_name = "x86_64-linux" %}  # [linux64]
@@ -13,13 +13,13 @@ package:
 
 source:
   url: https://developer.download.nvidia.com/compute/cuda/redist/{{ name }}/{{ platform }}/{{ name }}-{{ platform }}-{{ version }}-archive.{{ extension }}
-  sha256: 222c49b29afb544c69542c4e658b0a1bd01fd2306f2136ad6990ccfff482a097  # [linux64]
+  sha256: c2a635c98aaafff7c7c9daf4c1a60c96c2cbd7b580cff488a26376f42194d9a0  # [linux64]
   sha256: 4e8d2b525322be9ab6ae574bd1d0325a4bf9c6c3bbdaa1611b5b969b7b34b0c4  # [aarch64]
   patches:
     - Makefile.patch
 
 build:
-  number: 1
+  number: 0
   binary_relocation: false
   skip: true  # [not (linux64 or aarch64)]
 
@@ -193,4 +193,4 @@ about:
 
 extra:
   recipe-maintainers:
-    - adibbley
+    - conda-forge/cuda
