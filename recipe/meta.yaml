@@ -21,7 +21,7 @@ source:
 build:
   number: 0
   binary_relocation: false
-  skip: true  # [not (linux64 or aarch64)]
+  skip: true  # [not linux]
 
 test:
   requires:
