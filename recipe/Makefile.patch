@@ -1,15 +1,21 @@
---- samples/Makefile        2022-06-24 00:23:23.000000000 +0000
-+++ samples/Makefile.new    2022-06-27 15:04:32.235125647 +0000
-@@ -35,8 +35,8 @@
+--- samples/Makefile	2023-08-14 23:46:34.000000000 -0400
++++ samples/Makefile.new	2023-12-19 11:54:43.264080087 -0500
+@@ -35,13 +35,13 @@
  
  # Common includes and paths for CUDA
+ ARCH ?= $(shell uname -m)
 -CUDA_PATH   := /usr/local/cuda
--CUFILE_PATH ?= /usr/local/cuda/targets/x86_64-linux/lib/
--CUFILE_INCLUDE_PATH ?= /usr/local/cuda/targets/x86_64-linux/include/
 +CUDA_PATH   := ${PREFIX}
-+CUFILE_PATH ?= $(CUDA_PATH)/targets/x86_64-linux/lib/
-+CUFILE_INCLUDE_PATH ?= $(CUDA_PATH)/targets/x86_64-linux/include/
+ ifeq ($(ARCH),aarch64)
+-	CUFILE_PATH ?= /usr/local/cuda/targets/sbsa-linux/lib/
+-	CUFILE_INCLUDE_PATH ?= /usr/local/cuda/targets/sbsa-linux/include/
++	CUFILE_PATH ?= $(CUDA_PATH)/targets/sbsa-linux/lib/
++	CUFILE_INCLUDE_PATH ?= $(CUDA_PATH)/targets/sbsa-linux/include/
+ else
+-	CUFILE_PATH ?= /usr/local/cuda/targets/x86_64-linux/lib/
+-	CUFILE_INCLUDE_PATH ?= /usr/local/cuda/targets/x86_64-linux/include/
++	CUFILE_PATH ?= $(CUDA_PATH)/targets/x86_64-linux/lib/
++	CUFILE_INCLUDE_PATH ?= $(CUDA_PATH)/targets/x86_64-linux/include/
+ endif
  CXXFLAGS    := -Wall
  CXXFLAGS    += -I $(CUDA_PATH)/include/ 
- CXXFLAGS    += -I $(CUFILE_INCLUDE_PATH)
-
