@@ -1,6 +1,6 @@
 {% set name = "libcufile" %}
-{% set version = "1.7.2.10" %}
-{% set cuda_version = "12.2" %}
+{% set version = "1.8.1.2" %}
+{% set cuda_version = "12.3" %}
 {% set platform = "linux-x86_64" %}  # [linux64]
 {% set platform = "linux-sbsa" %}  # [aarch64]
 {% set target_name = "x86_64-linux" %}  # [linux64]
@@ -13,8 +13,8 @@ package:
 
 source:
   url: https://developer.download.nvidia.com/compute/cuda/redist/{{ name }}/{{ platform }}/{{ name }}-{{ platform }}-{{ version }}-archive.{{ extension }}
-  sha256: 60f9e442b09998d1937827b4f56982bfc22fa1c15ede9bc1261e9cc947a94087  # [linux64]
-  sha256: 00be847ca86b90fb540174ad70f34899c2f8f351637775b9c5fef5b7ad3adb76  # [aarch64]
+  sha256: 3f71f3497a7a87dffc3e8c7dc06e128bb4d876eebd8719be94f366c62975035e  # [linux64]
+  sha256: 5800140ba9b1e0b32a862e6ea0ec2685fc67745dc5bdcd22a5b24284de021031  # [aarch64]
   patches:
     - Makefile.patch
 
