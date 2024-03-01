@@ -28,7 +28,7 @@ for i in `ls`; do
                 ln -s ${PREFIX}/${targetsDir}/$j ${PREFIX}/$j
 
                 if [[ $j =~ \.so\. ]]; then
-                    patchelf --set-rpath '$ORIGIN' ${PREFIX}/${targetsDir}/$j
+                    patchelf --set-rpath '$ORIGIN' --force-rpath ${PREFIX}/${targetsDir}/$j
                 fi
             done
         fi
