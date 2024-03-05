@@ -15,8 +15,6 @@ source:
   url: https://developer.download.nvidia.com/compute/cuda/redist/{{ name }}/{{ platform }}/{{ name }}-{{ platform }}-{{ version }}-archive.{{ extension }}
   sha256: 6d087a5670d3a6e54429d670482db711824cffbd4b472ddea02fe19742d194ce  # [linux64]
   sha256: 3bdfcfff9c8190e0a7e7f399f17b0b291d5cc3755117e8e53671fedd7dd25de0  # [aarch64]
-  patches:
-    - Makefile.patch
 
 build:
   number: 0
@@ -150,7 +148,6 @@ outputs:
 
   - name: gds-tools
     files:
-      - gds/samples
       - gds/tools
     requirements:
       build:
@@ -169,7 +166,6 @@ outputs:
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
     test:
       commands:
-        - test -d $PREFIX/gds/samples
         - test -d $PREFIX/gds/tools
     about:
       home: https://developer.nvidia.com/cuda-toolkit
