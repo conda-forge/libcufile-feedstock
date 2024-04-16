@@ -1,6 +1,6 @@
 {% set name = "libcufile" %}
-{% set version = "1.7.2.10" %}
-{% set cuda_version = "12.2" %}
+{% set version = "1.9.1.3" %}
+{% set cuda_version = "12.4" %}
 {% set platform = "linux-x86_64" %}  # [linux64]
 {% set platform = "linux-sbsa" %}  # [aarch64]
 {% set target_name = "x86_64-linux" %}  # [linux64]
@@ -13,13 +13,11 @@ package:
 
 source:
   url: https://developer.download.nvidia.com/compute/cuda/redist/{{ name }}/{{ platform }}/{{ name }}-{{ platform }}-{{ version }}-archive.{{ extension }}
-  sha256: 60f9e442b09998d1937827b4f56982bfc22fa1c15ede9bc1261e9cc947a94087  # [linux64]
-  sha256: 00be847ca86b90fb540174ad70f34899c2f8f351637775b9c5fef5b7ad3adb76  # [aarch64]
-  patches:
-    - Makefile.patch
+  sha256: 5bf067c142e0e78d6b5eb9904f0703a1f5f814a27c44cff596f54630582bb2a9  # [linux64]
+  sha256: 5db80b1905b3fe25a07f29462c8694af1375834c1d8e7b6bf4cf4ffbb8c0b934  # [aarch64]
 
 build:
-  number: 0
+  number: 1
   binary_relocation: false
   skip: true  # [not linux]
 
@@ -150,7 +148,6 @@ outputs:
 
   - name: gds-tools
     files:
-      - gds/samples
       - gds/tools
     requirements:
       build:
@@ -169,7 +166,6 @@ outputs:
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
     test:
       commands:
-        - test -d $PREFIX/gds/samples
         - test -d $PREFIX/gds/tools
     about:
       home: https://developer.nvidia.com/cuda-toolkit

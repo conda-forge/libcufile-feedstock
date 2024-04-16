@@ -6,7 +6,6 @@ mkdir -p ${PREFIX}/lib
 mkdir -p ${PREFIX}/gds
 rm -rv etc
 mv -v man ${PREFIX}/man
-mv -v samples ${PREFIX}/gds/samples
 mv -v tools ${PREFIX}/gds/tools
 [[ -d pkg-config ]] && mv pkg-config ${PREFIX}/lib/pkgconfig
 [[ -d "$PREFIX/lib/pkgconfig" ]] && sed -E -i "s|cudaroot=.+|cudaroot=$PREFIX|g" $PREFIX/lib/pkgconfig/cufile*.pc
@@ -28,7 +27,7 @@ for i in `ls`; do
                 ln -s ${PREFIX}/${targetsDir}/$j ${PREFIX}/$j
 
                 if [[ $j =~ \.so\. ]]; then
-                    patchelf --set-rpath '$ORIGIN' ${PREFIX}/${targetsDir}/$j
+                    patchelf --set-rpath '$ORIGIN' --force-rpath ${PREFIX}/${targetsDir}/$j
                 fi
             done
         fi

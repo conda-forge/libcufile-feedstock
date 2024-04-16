@@ -11,7 +11,11 @@ for lib in `find ${PREFIX}/${targetsDir}/lib -type f`; do
 
     rpath=$(patchelf --print-rpath $lib)
     echo "$lib rpath: $rpath"
-    [[ $rpath == "\$ORIGIN" ]] || errors+="$lib\n"
+    if [[ $rpath != "\$ORIGIN" ]]; then
+        errors+="$lib\n"
+    elif [[ $(objdump -x ${lib} | grep "PATH") == *"RUNPATH"* ]]; then
+        errors+="$lib\n"
+    fi
 done
 
 if [[ $errors ]]; then
