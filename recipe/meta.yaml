@@ -17,7 +17,7 @@ source:
   sha256: 5db80b1905b3fe25a07f29462c8694af1375834c1d8e7b6bf4cf4ffbb8c0b934  # [aarch64]
 
 build:
-  number: 0
+  number: 1
   binary_relocation: false
   skip: true  # [not (linux64 or aarch64)]
 
