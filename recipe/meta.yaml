@@ -17,7 +17,7 @@ source:
   sha256: 5db80b1905b3fe25a07f29462c8694af1375834c1d8e7b6bf4cf4ffbb8c0b934  # [aarch64]
 
 build:
-  number: 1
+  number: 2
   binary_relocation: false
   skip: true  # [not (linux64 or aarch64)]
 
@@ -55,7 +55,7 @@ outputs:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
-        - sysroot_{{ target_platform }} 2.17    # [linux]
+        - {{ stdlib("c") }}
         - {{ cdt("rdma-core-devel") }}          # [linux64]
         - patchelf <0.18.0                      # [linux]
       host:
@@ -90,7 +90,7 @@ outputs:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
-        - sysroot_{{ target_platform }} 2.17    # [linux]
+        - {{ stdlib("c") }}
       host:
         - cuda-version {{ cuda_version }}
       run:
@@ -125,7 +125,7 @@ outputs:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
-        - sysroot_{{ target_platform }} 2.17    # [linux]
+        - {{ stdlib("c") }}
       host:
         - cuda-version {{ cuda_version }}
       run:
@@ -154,7 +154,7 @@ outputs:
         - {{ compiler("c") }}
         - {{ compiler("cxx") }}
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
-        - sysroot_{{ target_platform }} 2.17   # [linux]
+        - {{ stdlib("c") }}
       host:
         - cuda-version {{ cuda_version }}
         - libcufile-dev {{ version }}
