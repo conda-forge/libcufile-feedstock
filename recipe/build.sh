@@ -3,11 +3,12 @@
 # Install to conda style directories
 [[ -d lib64 ]] && mv lib64 lib
 mkdir -p ${PREFIX}/lib
+mkdir -p ${PREFIX}/lib/pkgconfig
 mkdir -p ${PREFIX}/gds
 rm -rv etc
 mv -v man ${PREFIX}/man
 mv -v tools ${PREFIX}/gds/tools
-[[ -d pkg-config ]] && mv pkg-config ${PREFIX}/lib/pkgconfig
+[[ -d pkg-config ]] && mv pkg-config/* ${PREFIX}/lib/pkgconfig/
 [[ -d "$PREFIX/lib/pkgconfig" ]] && sed -E -i "s|cudaroot=.+|cudaroot=$PREFIX|g" $PREFIX/lib/pkgconfig/cufile*.pc
 
 [[ ${target_platform} == "linux-64" ]] && targetsDir="targets/x86_64-linux"
