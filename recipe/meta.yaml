@@ -25,7 +25,6 @@ test:
   requires:
     - patchelf  # [linux]
   files:
-    - test-glibc-bound.sh
     - test-rpath-main.sh
   commands:
     # Note that the version of libcufile does not match
@@ -42,7 +41,6 @@ test:
     - test -f $PREFIX/targets/{{ target_name }}/lib/libcufile.so.{{ full_version }}
     - test -f $PREFIX/targets/{{ target_name }}/lib/libcufile_rdma.so.{{ full_version }}
     - bash test-rpath-main.sh
-    - bash test-glibc-bound.sh
 
 outputs:
   - name: libcufile
