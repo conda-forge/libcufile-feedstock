@@ -64,10 +64,6 @@ outputs:
         - {{ pin_compatible("cuda-version", max_pin="x.x") }}
       run_constrained:
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
-        # if there's another, older, sysroot in the same environment;
-        # libcufile might see the glibc there and fail to load, see
-        # https://github.com/conda-forge/conda-forge-pinning-feedstock/pull/6745#issuecomment-2503604312
-        - sysroot_{{ target_platform }} >={{ c_stdlib_version }}
     # Tests are defined at the top level, due to package/output name conflicts.
     about:
       home: https://developer.nvidia.com/cuda-toolkit
