@@ -198,3 +198,4 @@ about:
 extra:
   recipe-maintainers:
     - conda-forge/cuda
+  feedstock-name: libcufile
