@@ -72,3 +72,5 @@ for file in "${PREFIX}/${targetsDir}"/lib/libcufile*.so.*; do
       echo "The binary is compatible."
     fi
 done
+
+check-glibc "$PREFIX"/lib*/*.so.* "$PREFIX"/bin/* "$PREFIX"/targets/*/lib*/*.so.* "$PREFIX"/targets/*/bin/*
