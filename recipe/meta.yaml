@@ -18,17 +18,17 @@ source:
 
 build:
   number: 1
-  binary_relocation: false
   skip: true  # [not (linux64 or aarch64)]
 
 requirements:
   build:
-    - cf-nvidia-tools 1.*  # [linux] 
+    - cf-nvidia-tools 1.*  # [linux]
     - patchelf <0.18.0                      # [linux]
 
 outputs:
   - name: libcufile
     build:
+      binary_relocation: false
       missing_dso_whitelist:
         - "*/libcuda.so.*"
     files:
@@ -149,6 +149,9 @@ outputs:
       doc_url: https://docs.nvidia.com/gpudirect-storage/api-reference-guide/index.html
 
   - name: gds-tools
+    build:
+      missing_dso_whitelist:
+        - "*/libcuda.so.*"
     files:
       - gds/tools
     requirements:
