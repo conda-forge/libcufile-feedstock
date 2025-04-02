@@ -8,7 +8,7 @@
 {% set extension = "tar.xz" %}  # [not win]
 
 package:
-  name: {{ name|lower }}
+  name: {{ name|lower }}-split
   version: {{ version }}
 
 source:
@@ -17,34 +17,18 @@ source:
   sha256: 3664a21fad7b7bb4424beec650fe4d1bee77062d4038427ba90bf4f5edf364fe  # [aarch64]
 
 build:
-  number: 0
-  binary_relocation: false
+  number: 1
   skip: true  # [not (linux64 or aarch64)]
 
-test:
-  requires:
-    - patchelf  # [linux]
-  files:
-    - test-rpath-main.sh
-  commands:
-    # Note that the version of libcufile does not match
-    # {{ version.split(".")[0] }} but the major version of libcufile_rdma does
-    # match that. Also we must drop the last component of the version when
-    # finding the versioned .so file.
-    {% set full_version = version.split(".")[:-1] | join(".") %}
-    - test -L $PREFIX/lib/libcufile.so.0
-    - test -L $PREFIX/lib/libcufile_rdma.so.{{ version.split(".")[0] }}
-    - test -L $PREFIX/lib/libcufile.so.{{ full_version }}
-    - test -L $PREFIX/lib/libcufile_rdma.so.{{ full_version }}
-    - test -L $PREFIX/targets/{{ target_name }}/lib/libcufile.so.0
-    - test -L $PREFIX/targets/{{ target_name }}/lib/libcufile_rdma.so.{{ version.split(".")[0] }}
-    - test -f $PREFIX/targets/{{ target_name }}/lib/libcufile.so.{{ full_version }}
-    - test -f $PREFIX/targets/{{ target_name }}/lib/libcufile_rdma.so.{{ full_version }}
-    - bash test-rpath-main.sh
+requirements:
+  build:
+    - cf-nvidia-tools 1.*  # [linux]
+    - patchelf <0.18.0                      # [linux]
 
 outputs:
   - name: libcufile
     build:
+      binary_relocation: false
       missing_dso_whitelist:
         - "*/libcuda.so.*"
     files:
@@ -56,7 +40,6 @@ outputs:
         - {{ compiler("cxx") }}
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
         - {{ stdlib("c") }}
-        - patchelf <0.18.0                      # [linux]
       host:
         - rdma-core                             # [linux]
         - cuda-version {{ cuda_version }}
@@ -64,7 +47,26 @@ outputs:
         - {{ pin_compatible("cuda-version", max_pin="x.x") }}
       run_constrained:
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
-    # Tests are defined at the top level, due to package/output name conflicts.
+    test:
+      requires:
+        - patchelf  # [linux]
+      files:
+        - test-rpath-main.sh
+      commands:
+        # Note that the version of libcufile does not match
+        # {{ version.split(".")[0] }} but the major version of libcufile_rdma does
+        # match that. Also we must drop the last component of the version when
+        # finding the versioned .so file.
+        {% set full_version = version.split(".")[:-1] | join(".") %}
+        - test -L $PREFIX/lib/libcufile.so.0
+        - test -L $PREFIX/lib/libcufile_rdma.so.{{ version.split(".")[0] }}
+        - test -L $PREFIX/lib/libcufile.so.{{ full_version }}
+        - test -L $PREFIX/lib/libcufile_rdma.so.{{ full_version }}
+        - test -L $PREFIX/targets/{{ target_name }}/lib/libcufile.so.0
+        - test -L $PREFIX/targets/{{ target_name }}/lib/libcufile_rdma.so.{{ version.split(".")[0] }}
+        - test -f $PREFIX/targets/{{ target_name }}/lib/libcufile.so.{{ full_version }}
+        - test -f $PREFIX/targets/{{ target_name }}/lib/libcufile_rdma.so.{{ full_version }}
+        - bash test-rpath-main.sh
     about:
       home: https://developer.nvidia.com/cuda-toolkit
       license: LicenseRef-NVIDIA-End-User-License-Agreement
@@ -147,6 +149,9 @@ outputs:
       doc_url: https://docs.nvidia.com/gpudirect-storage/api-reference-guide/index.html
 
   - name: gds-tools
+    build:
+      missing_dso_whitelist:
+        - "*/libcuda.so.*"
     files:
       - gds/tools
     requirements:
@@ -196,3 +201,4 @@ about:
 extra:
   recipe-maintainers:
     - conda-forge/cuda
+  feedstock-name: libcufile
