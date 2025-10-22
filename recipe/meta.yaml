@@ -2,9 +2,11 @@
 {% set version = "1.14.1.1" %}
 {% set cuda_version = "12.9" %}
 {% set platform = "linux-x86_64" %}  # [linux64]
-{% set platform = "linux-sbsa" %}  # [aarch64]
+{% set platform = "linux-sbsa" %}  # [aarch64 and arm_variant_type=="sbsa"]
+{% set platform = "linux-aarch64" %}  # [aarch64 and arm_variant_type=="tegra"]
 {% set target_name = "x86_64-linux" %}  # [linux64]
-{% set target_name = "sbsa-linux" %}  # [aarch64]
+{% set target_name = "sbsa-linux" %}  # [aarch64 and arm_variant_type=="sbsa"]
+{% set target_name = "aarch64-linux" %}  # [aarch64 and arm_variant_type=="tegra"]
 {% set extension = "tar.xz" %}  # [not win]
 
 package:
@@ -14,10 +16,11 @@ package:
 source:
   url: https://developer.download.nvidia.com/compute/cuda/redist/{{ name }}/{{ platform }}/{{ name }}-{{ platform }}-{{ version }}-archive.{{ extension }}
   sha256: 7ba9834b8dc2f8cdb1710a49f3de3f627bbcd4cc1f8a754019c66c8c80fdaee7  # [linux64]
-  sha256: 6b1d2a771bd822fdd06a6286eb59acba179b13fe063ae5b0de8fc0f4991a39d8  # [aarch64]
+  sha256: 6b1d2a771bd822fdd06a6286eb59acba179b13fe063ae5b0de8fc0f4991a39d8  # [aarch64 and arm_variant_type=="sbsa"]
+  sha256: 196b61a1bf02b85e76c21bdfe414a3f4db4380df41d9212c9eb6d0aa92eee1ce  # [aarch64 and arm_variant_type=="tegra"]
 
 build:
-  number: 0
+  number: 1
   skip: true  # [not (linux64 or aarch64)]
 
 requirements:
@@ -45,7 +48,6 @@ outputs:
         - cuda-version {{ cuda_version }}
       run:
         - {{ pin_compatible("cuda-version", max_pin="x.x") }}
-      run_constrained:
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
     test:
       requires:
@@ -59,13 +61,13 @@ outputs:
         # finding the versioned .so file.
         {% set full_version = version.split(".")[:-1] | join(".") %}
         - test -L $PREFIX/lib/libcufile.so.0
-        - test -L $PREFIX/lib/libcufile_rdma.so.{{ version.split(".")[0] }}
+        - test -L $PREFIX/lib/libcufile_rdma.so.{{ version.split(".")[0] }}  # [aarch64 and arm_variant_type=="sbsa"]
         - test -L $PREFIX/lib/libcufile.so.{{ full_version }}
-        - test -L $PREFIX/lib/libcufile_rdma.so.{{ full_version }}
+        - test -L $PREFIX/lib/libcufile_rdma.so.{{ full_version }}           # [aarch64 and arm_variant_type=="sbsa"]
         - test -L $PREFIX/targets/{{ target_name }}/lib/libcufile.so.0
-        - test -L $PREFIX/targets/{{ target_name }}/lib/libcufile_rdma.so.{{ version.split(".")[0] }}
+        - test -L $PREFIX/targets/{{ target_name }}/lib/libcufile_rdma.so.{{ version.split(".")[0] }}  # [aarch64 and arm_variant_type=="sbsa"]
         - test -f $PREFIX/targets/{{ target_name }}/lib/libcufile.so.{{ full_version }}
-        - test -f $PREFIX/targets/{{ target_name }}/lib/libcufile_rdma.so.{{ full_version }}
+        - test -f $PREFIX/targets/{{ target_name }}/lib/libcufile_rdma.so.{{ full_version }}  # [aarch64 and arm_variant_type=="sbsa"]
         - bash test-rpath-main.sh
     about:
       home: https://developer.nvidia.com/cuda-toolkit
@@ -98,16 +100,16 @@ outputs:
       run:
         - {{ pin_compatible("cuda-version", max_pin="x.x") }}
         - {{ pin_subpackage("libcufile", exact=True) }}
-      run_constrained:
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
+      run_constrained:
         - libcufile-static >={{ version }}
     test:
       commands:
         - test -L $PREFIX/lib/libcufile.so
-        - test -L $PREFIX/lib/libcufile_rdma.so
+        - test -L $PREFIX/lib/libcufile_rdma.so  # [aarch64 and arm_variant_type=="sbsa"]
         - test -f $PREFIX/targets/{{ target_name }}/include/cufile.h
         - test -L $PREFIX/targets/{{ target_name }}/lib/libcufile.so
-        - test -L $PREFIX/targets/{{ target_name }}/lib/libcufile_rdma.so
+        - test -L $PREFIX/targets/{{ target_name }}/lib/libcufile_rdma.so  # [aarch64 and arm_variant_type=="sbsa"]
         - test -d $PREFIX/man/man3
     about:
       home: https://developer.nvidia.com/cuda-toolkit
@@ -132,12 +134,11 @@ outputs:
         - cuda-version {{ cuda_version }}
       run:
         - {{ pin_compatible("cuda-version", max_pin="x.x") }}
-      run_constrained:
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
     test:
       commands:
         - test -f $PREFIX/targets/{{ target_name }}/lib/libcufile_static.a
-        - test -f $PREFIX/targets/{{ target_name }}/lib/libcufile_rdma_static.a
+        - test -f $PREFIX/targets/{{ target_name }}/lib/libcufile_rdma_static.a  # [aarch64 and arm_variant_type=="sbsa"]
     about:
       home: https://developer.nvidia.com/cuda-toolkit
       license: LicenseRef-NVIDIA-End-User-License-Agreement
@@ -168,7 +169,6 @@ outputs:
         - {{ pin_compatible("cuda-version", max_pin="x.x") }}
         - {{ pin_subpackage("libcufile", max_pin="x") }}
         - {{ pin_compatible("libnuma", max_pin="x") }}  # [linux]
-      run_constrained:
         - arm-variant * {{ arm_variant_type }}  # [aarch64]
     test:
       requires:
