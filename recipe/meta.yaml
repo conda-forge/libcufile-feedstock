@@ -17,7 +17,7 @@ source:
   sha256: 8166196c494dfbc7e078afa2b3d6c02d82e58ea4e3ce2719339dd6225d7e5a72  # [aarch64]
 
 build:
-  number: 0
+  number: 1
   skip: true  # [not (linux64 or aarch64)]
 
 requirements:
