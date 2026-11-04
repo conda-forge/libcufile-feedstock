@@ -1,13 +1,13 @@
 {% set name = "libcufile" %}
-{% set version = "1.19.1.55" %}
-{% set cuda_version = "13.4" %}
+{% set version = "1.20.0.107" %}
+{% set cuda_version = "13.5" %}
 {% set platform = "linux-x86_64" %}  # [linux64]
 {% set platform = "linux-sbsa" %}  # [aarch64]
 {% set target_name = "x86_64-linux" %}  # [linux64]
 {% set target_name = "sbsa-linux" %}  # [aarch64]
 {% set extension = "tar.xz" %}  # [not win]
-{% set sha256 = "8a79272aa67dd952107384a7d0d6f6466c319419ddca156bcfe15d186a23b293" %}  # [linux64]
-{% set sha256 = "90dc3af110fef1c2b81083be357875f9aafdb3f0ebcd5b95dd1da8171ddf54ad" %}  # [aarch64]
+{% set sha256 = "7451c8fab65b9760634fd8ea218ff8818aa5e41017eea728d6f64756fdee6766" %}  # [linux64]
+{% set sha256 = "27f076a3e62ed2907df7bfe7f3612188f3bb635d2a18f115f008554e25e204dc" %}  # [aarch64]
 
 package:
   name: {{ name|lower }}-split
